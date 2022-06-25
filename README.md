@@ -19,21 +19,22 @@ Python for backend
 3) Many more to add
 
 # To run the web-app:
-> pip install requirements.txt 
+$ pip install requirements.txt 
 If you face any issues with pyaudio:
 First install homebrew then install portaudio with brew:
-> brew install portaudio
+$ brew install portaudio
 Then find the path to where your portaudio has been installed and replace the below two paths with your path:
-! make sure to replace the path else it might not work
-> pip3 install --global-option='build_ext' --global-option='-I/opt/homebrew/Cellar portaudio/19.7.0/include' --global-option='-L/opt/homebrew/Cellar/portaudio/19.7.0/lib' pyaudio
+!!! make sure to replace the path else it might not work
+$ pip3 install --global-option='build_ext' --global-option='-I/opt/homebrew/Cellar portaudio/19.7.0/include' --global-option='-L/opt/homebrew/Cellar/portaudio/19.7.0/lib' pyaudio
+
 Once installations are complete:
-> cd web-app
+$ cd web-app
 Then run the Django app:
-> django-admin startproject index 
+$ django-admin startproject index 
 
 # To run the mobile-app
 For android:
-> npm run android 
-For IOS:
-> npn run ios
+$ npm run android 
 
+For IOS:
+$ npn run ios
