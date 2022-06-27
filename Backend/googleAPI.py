@@ -1,55 +1,68 @@
-from __future__ import print_function
-import datetime
-import os.path
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
+from googleapiclient.discovery import build 
 from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
+import pickle
+# import logging
 
-SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
-
-
-def main():
-    """Shows basic usage of the Google Calendar API.
-    Prints the start and name of the next 10 events on the user's calendar.
-    """
-    creds = None
-    if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
-        with open('token.json', 'w') as token:
-            token.write(creds.to_json())
-
+#Function to create/get credentials 
+def getCreds():
+    scopes = ["https://www.googleapis.com/auth/calendar"] # Give all(read/write/delete) access to this app 
+    flow = InstalledAppFlow.from_client_secrets_file("Creds/client_secret.json", scopes)
     try:
-        service = build('calendar', 'v3', credentials=creds)
-
-        now = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
-        print('Getting the upcoming 10 events')
-        events_result = service.events().list(calendarId='primary', timeMin=now,
-                                              maxResults=10, singleEvents=True,
-                                              orderBy='startTime').execute()
-        events = events_result.get('items', [])
-
-        if not events:
-            print('No upcoming events found.')
-            return
-
-        for event in events:
-            start = event['start'].get('dateTime', event['start'].get('date'))
-            print(start, event['summary'])
-
-    except HttpError as error:
-        print('An error occurred: %s' % error)
+        # Uses the previous credentials if existing
+        credentials = pickle.load(open("Creds/user_token.pkl", "rb"))
+        return credentials
+    except:
+        # This takes user to grant access screen of Google on a browser
+        credentials = flow.run_console()
+        pickle.dump(credentials, open("Creds/user_token.pkl", "wb"))
+        return credentials
 
 
-if __name__ == '__main__':
-    main()
+# Function to create calendar function
+def createCalendarService(credentials):
+    try:
+        #Creating calendar service of Google and returning the service
+        service = build("calendar", "v3", credentials=credentials) 
+        return service
+    except IOError as e:
+        return str(e)
+
+
+# Function to get all calendars in calendar
+def getCalendars(service):
+    result = []
+    calendars = service.calendarList().list().execute()
+    for i in calendars["items"]:
+        #Accepted values to append are summary, id, kind, etag, timeZone, colorId, backgroundColor, foregroundColor, selected, accessRole, defaultReminders, notificationSettings, primary, conferenceProperties
+        result.append(i["summary"])
+    if result:
+        return result
+    else:
+        return "no calendars"
+
+
+# Function to get all events in calendar
+def getEvents(service):
+    result = []
+    # optParams = {'timeMax': '2022-6-27T23:59:59+00:00','timeMin': '2022-6-28T00:00:01+00:00'}
+    events =service.events().list(calendarId='primary', pageToken=None).execute()
+    for event in events['items']:
+        try:
+            result.append(event['summary'])
+        except:
+            result.append("No summary for this event")
+    if result:
+        return result
+    else:
+        return "No events"
+#Generating user credentials
+credentials = getCreds()
+#Creating claendar service
+service = createCalendarService(credentials)
+#Get all calendars present
+# calendars = getCalendars(service)
+# print("Calendars", calendars)
+#Get all events
+# events = getEvents(service)
+# print("Events", events)
 

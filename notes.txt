@@ -1,0 +1,89 @@
+###################################################################################################
+# To install pyaudio on Mac:
+pip3 install --global-option='build_ext' --global-option='-I/opt/homebrew/Cellar/portaudio/19.7.0/include' 
+--global-option='-L/opt/homebrew/Cellar/portaudio/19.7.0/lib' pyaudio
+###################################################################################################
+# Example object of calendar list:
+calendars = {
+    'kind': 'calendar#calendarList', 
+    'etag': '"p324bv7ttjf6vg0g"', 
+    'nextSyncToken': 'CIi_n72bzfgCEhdheXVzaGFybWExMTA4QGdtYWlsLmNvbQ==', 
+    'items': 
+    [
+        {
+            'kind': 'calendar#calendarListEntry', 
+            'etag': '"1633011714115000"', 
+            'id': 'ayusharma1108@gmail.com', 
+            'summary': 'ayusharma1108@gmail.com', 
+            'timeZone': 'Asia/Kolkata', 
+            'colorId': '14', 
+            'backgroundColor': '#9fe1e7', 
+            'foregroundColor': '#000000', 
+            'selected': True, 
+            'accessRole': 'owner', 
+            'defaultReminders': 
+            [
+                {
+                    'method': 'popup', 'minutes': 30
+                }
+            ],
+            'notificationSettings': 
+            {
+                'notifications': 
+                [
+                    {
+                        'type': 'eventCreation', 
+                        'method': 'email'
+                    }, 
+                    {
+                        'type': 'eventChange', 
+                        'method': 'email'
+                    }, 
+                    {
+                        'type': 'eventCancellation', 
+                        'method': 'email'
+                    }, 
+                    {
+                        'type': 'eventResponse', 
+                        'method': 'email'
+                    }
+                ]
+            }, 
+            'primary': True, 
+            'conferenceProperties': 
+            {
+                'allowedConferenceSolutionTypes': 
+                [
+                    'hangoutsMeet'
+                ]
+            }
+        }, 
+        {'kind': 'calendar#calendarListEntry', 'etag': '"1633011714115000"', 'id': 'family13060630447278340498@group.calendar.google.com', 'summary': 'Family', 'timeZone': 'UTC', 'colorId': '21', 'backgroundColor': '#cca6ac', 'foregroundColor': '#000000', 'selected': True, 'accessRole': 'writer', 'defaultReminders': [{'method': 'popup', 'minutes': 30}], 'conferenceProperties': {'allowedConferenceSolutionTypes': ['hangoutsMeet']}}, 
+        {'kind': 'calendar#calendarListEntry', 'etag': '"1633011714115000"', 'id': 'addressbook#contacts@group.v.calendar.google.com', 'summary': 'Birthdays', 'description': 'Displays birthdays, anniversaries and other event dates of people in Google Contacts.', 'timeZone': 'Asia/Kolkata', 'summaryOverride': 'Contacts', 'colorId': '13', 'backgroundColor': '#92e1c0', 'foregroundColor': '#000000', 'selected': True, 'accessRole': 'reader', 'defaultReminders': [], 'conferenceProperties': {'allowedConferenceSolutionTypes': ['hangoutsMeet']}}
+    ]
+}
+
+###################################################################################################
+# Reference links:
+https://developers.google.com/calendar/api/guides/auth (Calendar scopes)
+https://www.youtube.com/watch?v=j1mh0or2CX8 (Youtube for accessing the calendar API)
+
+###################################################################################################
+# To run the web-app:
+> pip install requirements.txt 
+If you face any issues with pyaudio:
+First install homebrew then install portaudio with brew:
+> brew install portaudio
+Then find the path to where your portaudio has been installed and replace the below two paths with your path:
+! make sure to replace the path else it might not work
+> pip3 install --global-option='build_ext' --global-option='-I/opt/homebrew/Cellar portaudio/19.7.0/include' --global-option='-L/opt/homebrew/Cellar/portaudio/19.7.0/lib' pyaudio
+Once installations are complete:
+> cd web-app
+Then run the Django app:
+> django-admin startproject index 
+
+# To run the mobile-app
+For android:
+> npm run android 
+For IOS:
+> npn run ios

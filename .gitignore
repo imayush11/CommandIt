@@ -1,4 +1,7 @@
-# Python
+# My files
+user_token.pkl
+
+# Python & Mobile
 commandIt_venv
 __pycache__/
 *.py[cod]
@@ -76,7 +79,6 @@ dmypy.json
 .pyre/
 .pytype/
 cython_debug/
-notes.txt
 # Native 
 .expo
 __generated__

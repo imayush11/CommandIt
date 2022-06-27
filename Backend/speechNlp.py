@@ -1,48 +1,21 @@
-import speech_recognition as sr
-import pyttsx3
+import speech_recognition
 
-# Initialize the recognizer
-r = sr.Recognizer()
-# Function to convert text to
-# speech
-def SpeakText(command):
-     
-    # Initialize the engine
-    engine = pyttsx3.init()
-    engine.say(command)
-    engine.runAndWait()
-     
-     
-# Loop infinitely for user to
-# speak
- 
-while(1):   
-     
-    # Exception handling to handle
-    # exceptions at the runtime
-    try:
-         
-        # use the microphone as source for input.
-        with sr.Microphone() as source2:
-             
-            # wait for a second to let the recognizer
-            # adjust the energy threshold based on
-            # the surrounding noise level
-            r.adjust_for_ambient_noise(source2, duration=0.2)
-             
-            #listens for the user's input
-            audio2 = r.listen(source2)
-             
-            # Using google to recognize audio
-            MyText = r.recognize_google(audio2)
-            MyText = MyText.lower()
- 
-            print("Did you say "+MyText)
-            SpeakText(MyText)
-             
-    except sr.RequestError as e:
-        print("Could not request results; {0}".format(e))
-         
-    except sr.UnknownValueError:
-        print("unknown error occured")
+# The Recognizer is initialized.
+UserVoiceRecognizer = speech_recognition.Recognizer()
 
+def recorgniseAudio():
+    while(1):
+        try:
+            with speech_recognition.Microphone() as UserVoiceInputSource:
+                UserVoiceRecognizer.adjust_for_ambient_noise(UserVoiceInputSource, duration=0.5)
+                UserVoiceInput = UserVoiceRecognizer.listen(UserVoiceInputSource)
+                UserVoiceInput_converted_to_Text = UserVoiceRecognizer.recognize_google(UserVoiceInput)
+                UserVoiceInput_converted_to_Text = UserVoiceInput_converted_to_Text.lower()
+                print(UserVoiceInput_converted_to_Text)
+        
+        except KeyboardInterrupt:
+            print('Terminating the Program due to keyboard interrupt!!!')
+            exit(0)
+        
+        except speech_recognition.UnknownValueError:
+            print("No User Voice detected OR unintelligible noises detected OR the recognized audio cannot be matched to text \n Please try again!!!")
