@@ -5,7 +5,7 @@ import pickle
 
 #Function to create/get credentials 
 def getCreds():
-    scopes = ["https://www.googleapis.com/auth/calendar"] # Give all(read/write/delete) access to this app 
+    scopes = ["https://www.googleapis.com/auth/calendar", "https://mail.google.com/"] # Give all(read/write/delete) access to this app 
     flow = InstalledAppFlow.from_client_secrets_file("Creds/client_secret.json", scopes)
     try:
         # Uses the previous credentials if existing
@@ -26,6 +26,10 @@ def createCalendarService(credentials):
         return service
     except IOError as e:
         return str(e)
+
+def createGmailService(credentials):
+    serviceGmail = build('gmail', 'v1', credentials=credentials)
+    return serviceGmail
 
 
 # Function to get all calendars in calendar
@@ -55,10 +59,18 @@ def getEvents(service):
         return result
     else:
         return "No events"
+
+def getEmails(service):
+    result = []
+    return result
+
 #Generating user credentials
 credentials = getCreds()
 #Creating claendar service
 service = createCalendarService(credentials)
+serviceGmail = createGmailService(credentials)
+results = serviceGmail.users().labels().list(userId='me').execute()
+print("Results\n", results)
 #Get all calendars present
 # calendars = getCalendars(service)
 # print("Calendars", calendars)
