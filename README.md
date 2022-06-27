@@ -25,10 +25,10 @@ Only the Backend folder is working as of now (updates are in progress everyday)
 2) Reading & listing email by saying "Show unread emails" or "Read emails from bla@gmail.com"
 3) Many more to add
 
-<<<<<<< HEAD
 # Roadmap:
-(Currently in progess)
+>Currently in progess
 1) Launching backend including NLP based function calling in the "Backend" folder with basic functions like listing calendars and events/emaisl from Google Calendar & Gmail
-(Future updates)
+
+>Future updates
 2) Launching the web-app with all backend functionality working with the UI basically on button clicks
 3) Lunching the mobile-app with all backend functionality working with UI
