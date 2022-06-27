@@ -5,8 +5,8 @@ NLP helps to extract major keywords from the commands inputted & is further carr
 implementing the changes 
 
 # Tech stack:
-React Native for building a native version for all Android & IOS users
-Python for backend 
+1) Languages: Python & JavaScript
+2) Frameworks: React Native(UI for movible app), Django(UI for web app)
 
 # Folder structure:
 1) Backend: Python backend code for speech recognition, NLP based actions & linking to Googles API for Calendar & gmail
