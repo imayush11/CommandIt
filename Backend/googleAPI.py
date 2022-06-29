@@ -49,7 +49,7 @@ def getCalendars(service):
 def getEvents(service):
     result = []
     # optParams = {'timeMax': '2022-6-27T23:59:59+00:00','timeMin': '2022-6-28T00:00:01+00:00'}
-    events =service.events().list(calendarId='primary', pageToken=None).execute()
+    events = service.events().list(calendarId='primary', pageToken=None).execute()
     for event in events['items']:
         try:
             result.append(event['summary'])
@@ -60,7 +60,7 @@ def getEvents(service):
     else:
         return "No events"
 
-def getEmails(service):
+def getEmails():
     result = []
     return result
 

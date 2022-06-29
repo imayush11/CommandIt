@@ -1,17 +1,17 @@
 # Introduction: 
-CommandIt is a Python based tool based on NLP & Google APIs. In simpler just provide voice commands to do stuff like schedule a meet in calendar 
-or read a mail 
-NLP helps to extract major keywords from the commands inputted & is further carried on by the code which requests the Google API for 
+CommandIt is a Python tool based on NLP & Google APIs. In simpler words, just provide voice commands to do stuff like schedule a meet in calendar 
+or read a mail
+NLP helps to extract major keywords from the commands inputted & is further carried on by code which requests the Google API for 
 implementing the changes 
 
 # Tech stack:
 1) Languages: Python & JavaScript
-2) Frameworks: React Native(UI for movible app), Django(UI for web app)
+2) Frameworks: React Native(UI for mobile app), Django(UI for web app)
 
 # Folder structure:
-1) Backend: Python backend code for speech recognition, NLP based actions & linking to Googles API for Calendar & gmail
-2) mobile-app: React Native based frontend for Android & IOS
-3) web-app: Python(Django & Flask) based web application for any browser
+1) Backend: Python backend code for speech recognition, NLP based actions & linking to Google's API for Calendar & Gmail
+2) mobile-app: JavaScript(React Native) based frontend for Android & IOS
+3) web-app: Python(Django) based web application for any browser
 
 # Current updates:
 Only the Backend folder is working as of now (updates are in progress everyday)
@@ -26,9 +26,9 @@ Only the Backend folder is working as of now (updates are in progress everyday)
 3) Many more to add
 
 # Roadmap:
->Currently in progess
+> Currently in progess
 1) Launching backend including NLP based function calling in the "Backend" folder with basic functions like listing calendars and events/emaisl from Google Calendar & Gmail
 
->Future updates
+> Future updates
 2) Launching the web-app with all backend functionality working with the UI basically on button clicks
 3) Lunching the mobile-app with all backend functionality working with UI

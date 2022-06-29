@@ -60,6 +60,7 @@ def fetchKey(filtered_sentence):
                 break
     return key
 
+
 def nlpConvert(user_input):
     word_tokens = word_tokenize(user_input)
     filtered_sentence = [w for w in word_tokens if not w.lower() in stop_words]
