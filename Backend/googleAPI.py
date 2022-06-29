@@ -1,6 +1,8 @@
 from googleapiclient.discovery import build 
 from google_auth_oauthlib.flow import InstalledAppFlow
 import pickle
+
+from regex import E
 # import logging
 
 #Function to create/get credentials 
@@ -19,23 +21,20 @@ def getCreds():
 
 
 # Function to create calendar function
-def createCalendarService(credentials):
+def createService(credentials):
     try:
         #Creating calendar service of Google and returning the service
-        service = build("calendar", "v3", credentials=credentials) 
-        return service
+        serviceCalendar = build("calendar", "v3", credentials=credentials) 
+        serviceGmail = build('gmail', 'v1', credentials=credentials)
+        return serviceCalendar, serviceGmail
     except IOError as e:
         return str(e)
 
-def createGmailService(credentials):
-    serviceGmail = build('gmail', 'v1', credentials=credentials)
-    return serviceGmail
-
 
 # Function to get all calendars in calendar
-def getCalendars(service):
+def getCalendars(serviceCalendar):
     result = []
-    calendars = service.calendarList().list().execute()
+    calendars = serviceCalendar.calendarList().list().execute()
     for i in calendars["items"]:
         #Accepted values to append are summary, id, kind, etag, timeZone, colorId, backgroundColor, foregroundColor, selected, accessRole, defaultReminders, notificationSettings, primary, conferenceProperties
         result.append(i["summary"])
@@ -46,10 +45,10 @@ def getCalendars(service):
 
 
 # Function to get all events in calendar
-def getEvents(service):
+def getEvents(serviceCalendar):
     result = []
     # optParams = {'timeMax': '2022-6-27T23:59:59+00:00','timeMin': '2022-6-28T00:00:01+00:00'}
-    events = service.events().list(calendarId='primary', pageToken=None).execute()
+    events = serviceCalendar.events().list(calendarId='primary', pageToken=None).execute()
     for event in events['items']:
         try:
             result.append(event['summary'])
@@ -60,21 +59,70 @@ def getEvents(service):
     else:
         return "No events"
 
-def getEmails():
-    result = []
-    return result
+
+def getMessageDetails(serviceGmail, message_id, format='metadata', metadata_headers=[]):
+    try:
+        result = serviceGmail.users().messages().get(
+            userId = "me",
+            id = message_id,
+            format = format,
+            metadataHeaders = metadata_headers
+        ).execute()
+        return result
+    except Exception as e:
+        return None
+
+
+def searchEmails(serviceGmail, label_Ids, query):
+    resultSubject = []
+    try:
+        result_mail = serviceGmail.users().messages().list(
+            userId = "me",
+            labelIds = label_Ids, 
+            q = query
+        ).execute()
+        result = result_mail.get('messages')
+        nextPageToken = result_mail.get('nextPageToken')
+        while nextPageToken:
+            result_mail = serviceGmail.users().messages().list(
+                userId = "me",
+                labelIds = label_Ids, 
+                q = query,
+                pageToken = nextPageToken
+            ).execute()
+            result.extend(result_mail.get('messages'))
+            nextPageToken = result_mail.get('nextPageToken')
+        print("Result: ", result)
+        for i in result:
+            messageId = i['threadId']
+            messageDetial = getMessageDetails(serviceGmail, i['id'], format='full', metadata_headers=['parts'])
+            messageDetialPayload = messageDetial.get('payload')
+            for j in messageDetialPayload['headers']:
+                if j['name'] == "Subject":
+                    if j['value']:
+                        messageSubject = '{0}'.format(j['value'])
+                        resultSubject.append(str(messageSubject))
+                    else:
+                        messageSubject = 'No Subject'
+                        resultSubject.append(str(messageSubject))
+        return result, resultSubject
+    except Exception as e:
+        return str(e)
+
 
 #Generating user credentials
 credentials = getCreds()
-#Creating claendar service
-service = createCalendarService(credentials)
-serviceGmail = createGmailService(credentials)
-results = serviceGmail.users().labels().list(userId='me').execute()
-print("Results\n", results)
+#Creating claendar & gmail service
+serviceCalendar, serviceGmail = createService(credentials)
 #Get all calendars present
 # calendars = getCalendars(service)
 # print("Calendars", calendars)
 #Get all events
 # events = getEvents(service)
 # print("Events", events)
+
+# Gmail 
+# result, resultSubject = searchEmails(serviceGmail, ['INBOX'], 'from:PlayStation')
+# for k in resultSubject:
+#     print(k)
 
